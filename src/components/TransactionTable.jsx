@@ -1,30 +1,38 @@
-import { useState, useEffect } from 'react';
-import { TransactionHistory } from './Api';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Pagination, Box } from '@mui/material';
+import {
+  Box,
+  Pagination,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+
+import { useHistory } from '../queries';
 
 const TransactionTable = () => {
-  const [transactions, setTransactions] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const rowsPerPage = 20;
+  const rowsPerPage = 10;
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const data = await TransactionHistory (page - 1, rowsPerPage);
-        setTransactions (data.transactions || []);
-        setTotalPages (data.totalPages || 1);
-      } 
-      catch (error) {
-        console.error ('خطا در دریافت تراکنش‌ها:', error);
-      }
-    };
+  const { data: transactionHistory, isLoading, error } = useHistory(page);
 
-    fetchTransactions();
-  }, [page]);
+  if (!transactionHistory?.data || isLoading) return <h1>loading...</h1>;
+
+  console.log((page - 1) * rowsPerPage + 1, page, rowsPerPage);
+
+  if (error)
+    return toast(error, {
+      type: 'error',
+    });
 
   const handlePageChange = (event, value) => {
     setPage(value);
+    console.log('event', event);
   };
 
   return (
@@ -45,7 +53,7 @@ const TransactionTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions.map((txn, index) => (
+            {transactionHistory.data.content.map((txn, index) => (
               <TableRow key={txn.transactionId}>
                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                 <TableCell>{txn.date}</TableCell>
@@ -59,7 +67,12 @@ const TransactionTable = () => {
         </Table>
       </TableContainer>
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-        <Pagination count={totalPages} page={page} onChange={handlePageChange} color="primary" />
+        <Pagination
+          count={transactionHistory.data.totalPages}
+          page={page}
+          onChange={handlePageChange}
+          color="primary"
+        />
       </Box>
     </Box>
   );

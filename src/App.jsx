@@ -1,5 +1,7 @@
 import 'react';
+
 import { Container } from '@mui/material';
+
 import TransactionTable from './components/TransactionTable';
 
 const App = () => {

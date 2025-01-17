@@ -14,6 +14,15 @@ module.exports = init({
   },
   // parser: '@typescript-eslint/parser',
   ignorePatterns: ['.eslintrc.js'],
+  rules: {
+    'import/extensions': 'warn',
+    'import/no-extraneous-dependencies': 'off',
+    'import/no-self-import': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
+    'import/no-unresolved': 'off',
+    'react/function-component-definition': 'off',
+    'react/no-typos': "off"
+  },
   settings: {
     // 'import/parsers': {
     //   '@typescript-eslint/parser': ['.ts', '.tsx'],
