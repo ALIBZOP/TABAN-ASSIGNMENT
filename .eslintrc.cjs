@@ -21,7 +21,7 @@ module.exports = init({
     'react-hooks/exhaustive-deps': 'off',
     'import/no-unresolved': 'off',
     'react/function-component-definition': 'off',
-    'react/no-typos': "off"
+    'react/no-typos': 'off',
   },
   settings: {
     // 'import/parsers': {
