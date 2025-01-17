@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "prepare": "husky",
+    "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
   "dependencies": {
@@ -42,7 +42,7 @@
     "vite-plugin-pwa": "^0.21.1"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "eslint --fix",
-    "*.{js,jsx,ts,tsx,md,html,css,yaml,yml}": "prettier --write"
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{md,html,css,yaml,yml}": "prettier --write"
   }
 }

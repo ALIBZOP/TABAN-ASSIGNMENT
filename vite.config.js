@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
@@ -9,7 +10,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: false,
+        enabled: true,
       },
       manifest: {
         name: 'My PWA App',

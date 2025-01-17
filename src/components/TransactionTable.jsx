@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 import {
   Box,
   Pagination,
@@ -9,6 +10,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Skeleton,
 } from '@mui/material';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -21,40 +23,66 @@ const TransactionTable = () => {
 
   const { data: transactionHistory, isLoading, error } = useHistory(page);
 
-  if (!transactionHistory?.data || isLoading) return <h1>loading...</h1>;
+  if (isLoading)
+    return (
+      <Box sx={{ padding: 2, textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Transaction History
+        </Typography>
+        <TableContainer component={Paper}>
+          <Skeleton variant="rectangular" width={750} height={600} />
+        </TableContainer>
+      </Box>
+    );
 
-  console.log((page - 1) * rowsPerPage + 1, page, rowsPerPage);
-
-  if (error)
-    return toast(error, {
-      type: 'error',
-    });
+  if (error) {
+    toast(error, { type: 'error' });
+    return null;
+  }
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    console.log('event', event);
   };
 
   return (
     <Box sx={{ padding: 2, textAlign: 'center' }}>
       <Typography variant="h4" gutterBottom>
-        تاریخچه تراکنش‌ها
+        Transaction History
       </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>شماره</TableCell>
-              <TableCell>تاریخ</TableCell>
-              <TableCell>مبلغ</TableCell>
-              <TableCell>وضعیت</TableCell>
-              <TableCell>دلیل خطا</TableCell>
-              <TableCell>شماره تراکنش</TableCell>
+              {[
+                'Number',
+                'Date',
+                'Amount',
+                'Status',
+                'Error reason',
+                'Transaction number',
+              ].map((header) => (
+                <TableCell
+                  key={header}
+                  sx={{
+                    backgroundColor: 'black',
+                    color: 'white',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                  }}
+                >
+                  {header}
+                </TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
             {transactionHistory.data.content.map((txn, index) => (
-              <TableRow key={txn.transactionId}>
+              <TableRow
+                key={txn.transactionId}
+                sx={{
+                  backgroundColor: index % 2 === 0 ? 'lightgray' : 'white',
+                }}
+              >
                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
                 <TableCell>{txn.date}</TableCell>
                 <TableCell>{txn.amount}</TableCell>
@@ -72,6 +100,12 @@ const TransactionTable = () => {
           page={page}
           onChange={handlePageChange}
           color="primary"
+          sx={{
+            backgroundColor: 'white',
+            borderRadius: '12px',
+            padding: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+          }}
         />
       </Box>
     </Box>
