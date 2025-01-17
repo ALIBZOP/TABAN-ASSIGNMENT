@@ -11,11 +11,12 @@ const TransactionTable = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const data = await TransactionHistory(page - 1, rowsPerPage);
-        setTransactions(data.transactions || []);
-        setTotalPages(data.totalPages || 1);
-      } catch (error) {
-        console.error('خطا در دریافت تراکنش‌ها:', error);
+        const data = await TransactionHistory (page - 1, rowsPerPage);
+        setTransactions (data.transactions || []);
+        setTotalPages (data.totalPages || 1);
+      } 
+      catch (error) {
+        console.error ('خطا در دریافت تراکنش‌ها:', error);
       }
     };
 
@@ -27,8 +28,8 @@ const TransactionTable = () => {
   };
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Typography variant="h5" gutterBottom>
+    <Box sx={{ padding: 2, textAlign: 'center' }}>
+      <Typography variant="h4" gutterBottom>
         تاریخچه تراکنش‌ها
       </Typography>
       <TableContainer component={Paper}>
@@ -36,12 +37,22 @@ const TransactionTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>شماره</TableCell>
+              <TableCell>تاریخ</TableCell>
+              <TableCell>مبلغ</TableCell>
+              <TableCell>وضعیت</TableCell>
+              <TableCell>دلیل خطا</TableCell>
+              <TableCell>شماره تراکنش</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {transactions.map((txn, index) => (
               <TableRow key={txn.transactionId}>
                 <TableCell>{(page - 1) * rowsPerPage + index + 1}</TableCell>
+                <TableCell>{txn.date}</TableCell>
+                <TableCell>{txn.amount}</TableCell>
+                <TableCell>{txn.status}</TableCell>
+                <TableCell>{txn.reason || '-'}</TableCell>
+                <TableCell>{txn.transactionId}</TableCell>
               </TableRow>
             ))}
           </TableBody>

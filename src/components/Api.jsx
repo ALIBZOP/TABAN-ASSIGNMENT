@@ -14,8 +14,13 @@ const apiTaban = axios.create({
 export const TransactionHistory = async (pageNumber = 0, pageSize = 20) => {
   try {
     const response = await apiTaban.post('/user-history', {
-      pageNumber,
-      pageSize,
+        direction: 'DESC',
+        filter: { type: null, status: null },
+        sortField: 'createdDate',
+        order: '',
+        sortClass: '',
+        pageNumber,
+        pageSize,
     });
     return response.data;
 
