@@ -14,7 +14,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
       },
       devOptions: {
-        enabled: false,
+        enabled: true,
       },
       manifest: {
         name: 'My PWA App',
